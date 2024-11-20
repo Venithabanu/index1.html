@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stud Rate Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border: 1px solid #81c784;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Stud Rate Calculator</h1>
+<form id="calculatorForm">
+    <div class="form-group">
+        <label for="diameter">Diameter (mm):</label>
+        <input type="number" id="diameter" step="0.01" required>
+    </div>
+    <div class="form-group">
+        <label for="length">Length of Stud (mm):</label>
+        <input type="number" id="length" step="0.01" required>
+    </div>
+    <div class="form-group">
+        <label for="materialCost">Cost of Material (per unit):</label>
+        <input type="number" id="materialCost" step="0.01" required>
+    </div>
+    <div class="form-group">
+        <label for="labourCost">Labour Cost:</label>
+        <input type="number" id="labourCost" step="0.01" required>
+    </div>
+    <button type="button" onclick="calculateRate()">Calculate</button>
+</form>
+
+<div id="output" class="output" style="display: none;"></div>
+
+<script>
+    function calculateRate() {
+        // Get input values
+        const diameter = parseFloat(document.getElementById("diameter").value);
+        const length = parseFloat(document.getElementById("length").value);
+        const materialCost = parseFloat(document.getElementById("materialCost").value);
+        const labourCost = parseFloat(document.getElementById("labourCost").value);
+
+        // Determine allowance
+        const allowance = length <= 75 ? 5 : 10;
+
+        // Calculate Y
+        const Y = diameter * diameter * (length + allowance) * 0.0000062;
+
+        // Calculate working cost
+        const workingCost = Y * materialCost;
+
+        // Calculate conversion rate
+        const conversionRate = workingCost + labourCost;
+
+        // Calculate marginal rate (final rate)
+        const marginalRate = conversionRate + (0.15 * conversionRate);
+
+        // Display only the final rate
+        const outputDiv = document.getElementById("output");
+        outputDiv.style.display = "block";
+        outputDiv.innerHTML = `Final Rate: ₹${marginalRate.toFixed(2)}`;
+    }
+</script>
+
+</body>
+</html>
